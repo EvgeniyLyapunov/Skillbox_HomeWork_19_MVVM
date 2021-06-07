@@ -4,9 +4,206 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Skillbox_HomeWork_19_MVVM"
+        xmlns:vm="clr-namespace:Skillbox_HomeWork_19_MVVM.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Банковская система ТЕРЕМОК" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+    <!--<Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>-->
+    
+    <Window.Resources>
+        <DataTemplate x:Key="titleText">
+            <TextBlock Text="{Binding}" 
+                       Foreground="Blue" 
+                       FontSize="10" 
+                       FontWeight="Normal"
+                       FontStyle="Italic" 
+                       TextWrapping="Wrap"/>
+        </DataTemplate>
+    </Window.Resources>
+
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="5*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBox IsReadOnly="True"
+                 Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                 Margin="2"
+                 Padding="2"
+                 TextWrapping="Wrap"
+                 TextAlignment="Center"
+                 VerticalContentAlignment="Center"
+                 FontSize="12"
+                 FontStyle="Italic"
+                 FontWeight="ExtraBold"
+                 Foreground="Green">
+            <TextBox.Text>
+                Данный проект разработан в рамках изучения 
+                технологии Entity Framwork и паттернов проектирования
+            </TextBox.Text>
+        </TextBox>
+
+        <TabControl Grid.Row="1" Grid.Column="0" >
+            <TabItem Header="Юридические лица">
+                <DataGrid x:Name="XDataGridOrg"
+                          IsSynchronizedWithCurrentItem="True"
+                          SelectionMode="Single"
+                          AutoGenerateColumns="False"
+                          ItemsSource="{Binding ViewOrgs}"
+                          IsReadOnly="True"
+                          >
+
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn x:Name="id_Org"
+                                            Header="ID"
+                                            Binding="{Binding Id_Client}"
+                                            HeaderTemplate="{StaticResource titleText}"
+                                            Width="25"
+                                            />
+                        <DataGridTextColumn x:Name="name"
+                                            Header="Наименование организации"
+                                            Binding="{Binding Name}"
+                                            HeaderTemplate="{StaticResource titleText}"
+                                            Width="285"/>
+                        <DataGridTextColumn x:Name="employeeCount"
+                                            Header="Кол-во сотрудников"
+                                            Binding="{Binding EmployeeCount}"
+                                            HeaderTemplate="{StaticResource titleText}"
+                                            Width="85"/>
+                        <DataGridTextColumn x:Name="deposit_Org"
+                                            Header="Депозит"
+                                            Binding="{Binding Deposit}"
+                                            HeaderTemplate="{StaticResource titleText}"
+                                            Width="80"/>
+                        <DataGridTextColumn x:Name="interestRate_Org"
+                                            Header="Процентная ставка"
+                                            Binding="{Binding InterestRate}"
+                                            HeaderTemplate="{StaticResource titleText}"
+                                            Width="80"/>
+                    </DataGrid.Columns>
+
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Пополнить депозит"
+                                      Name="XDepositIncreaseOrg" 
+                                      />
+                            <MenuItem Header="Снять с депозита"
+                                      Name="XDepositDecreaseOrg"
+                                      />
+                            <MenuItem Header="Перевод средств"
+                                      Name="XDepositTransferOrg"
+                                      />
+                            <MenuItem Header="Удалить клиента"
+                                      Name="XDeleteClientOrg"
+                                      />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+
+                </DataGrid>
+            </TabItem>
+
+            <TabItem  Header="Физические лица">
+                <DataGrid x:Name="XDataGridPerson"
+                          IsSynchronizedWithCurrentItem="True"
+                          SelectionMode="Single"
+                          AutoGenerateColumns="False"
+                          ItemsSource="{Binding ViewPersons}"
+                          IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn x:Name="id_Person"
+                                            Header="ID"
+                                            Binding="{Binding Path=Id_Client}"
+                                            HeaderTemplate="{StaticResource titleText}"
+                                            Width="25"/>
+                        <DataGridTextColumn x:Name="lastName"
+                                            Header="Фамилия"
+                                            Binding="{Binding Path=LastName}"
+                                            HeaderTemplate="{StaticResource titleText}"
+                                            Width="145"/>
+                        <DataGridTextColumn x:Name="firstName"
+                                            Header="Имя"
+                                            Binding="{Binding Path=FirstName}"
+                                            HeaderTemplate="{StaticResource titleText}"
+                                            Width="145"/>
+                        <DataGridTextColumn x:Name="age"
+                                            Header="Возраст"
+                                            Binding="{Binding Path=Age}"
+                                            HeaderTemplate="{StaticResource titleText}"
+                                            Width="80"/>
+                        <DataGridTextColumn x:Name="deposit_Person"
+                                            Header="Депозит"
+                                            Binding="{Binding Path=Deposit}"
+                                            HeaderTemplate="{StaticResource titleText}"
+                                            Width="80"/>
+                        <DataGridTextColumn x:Name="interestRate_Person"
+                                            Header="Процентная ставка"
+                                            Binding="{Binding Path=InterestRate}"
+                                            HeaderTemplate="{StaticResource titleText}"
+                                            Width="80"/>
+                    </DataGrid.Columns>
+
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Пополнить депозит"
+                                      Name="XDepositIncreasePerson"
+                                      />
+                            <MenuItem Header="Снять с депозита"
+                                      Name="XDepositDecreasePerson"
+                                      />
+                            <MenuItem Header="Перевод средств"
+                                      Name="XDepositTransferPerson"
+                                      />
+                            <MenuItem Header="Удалить клиента"
+                                      Name="XDeleteClientPerson"
+                                      />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Button x:Name="AddNewClient" Grid.Row="0"
+                    Height="35" Width="160"
+                    Content="Новый клиент"
+                    Command="{Binding AddNewClientWindowCommand}"
+                    />
+
+            <Button x:Name="AccrualOfInterest" Grid.Row="1"
+                    Height="35" Width="160"
+                    Content="Начисление процентов"
+                    />
+
+            <Button x:Name="Exit" Grid.Row="2"
+                    Height="35" Width="160"
+                    Content="Выход"
+                    />
+
+        </Grid>
+        <GroupBox Header="Журнал операций"
+                  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                  Margin="5">
+            <ListBox x:Name="XListBoxLog"
+                     Margin="2">
+
+            </ListBox>
+        </GroupBox>
+
     </Grid>
 </Window>

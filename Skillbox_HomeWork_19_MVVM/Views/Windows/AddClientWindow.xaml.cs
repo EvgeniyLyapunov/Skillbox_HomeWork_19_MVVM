@@ -1,5 +1,4 @@
-﻿using Skillbox_HomeWork_19_MVVM.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,20 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Skillbox_HomeWork_19_MVVM
+namespace Skillbox_HomeWork_19_MVVM.Views.Windows
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для AddClientWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class AddClientWindow : Window
     {
-        public MainWindow()
+        public AddClientWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
         }
     }
 }

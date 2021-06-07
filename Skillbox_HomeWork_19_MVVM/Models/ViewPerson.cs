@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
+using System.Collections;
 
 namespace Skillbox_HomeWork_19_MVVM.Models
 {
@@ -91,5 +92,6 @@ namespace Skillbox_HomeWork_19_MVVM.Models
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
+
     }
 }

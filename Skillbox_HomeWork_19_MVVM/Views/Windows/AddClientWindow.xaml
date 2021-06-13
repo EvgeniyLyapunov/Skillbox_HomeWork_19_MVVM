@@ -7,9 +7,7 @@
         xmlns:vm="clr-namespace:Skillbox_HomeWork_19_MVVM.ViewModels"
         mc:Ignorable="d"
         Title="Регистрация нового клиента" Height="200" Width="450" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
-    <!--<Window.DataContext>
-        <vm:MainWindowViewModel/>
-    </Window.DataContext>-->
+    
     <Border BorderThickness="3" BorderBrush="DarkGreen" CornerRadius="2">
         <Grid>
             <Grid.RowDefinitions>
@@ -40,7 +38,8 @@
             <Button x:Name="XXButtonOrg"
                     Grid.Column="2" Grid.Row="1"
                     Content="Юридическое лицо"
-                    Margin="15" 
+                    Margin="15"
+                    Command="{Binding AddOrganizationNewClientCommand}"
                     />
             <Button x:Name="XXButtonPerson"
                     Grid.Column="1" Grid.Row="1"

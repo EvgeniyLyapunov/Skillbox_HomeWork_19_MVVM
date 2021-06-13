@@ -7,9 +7,6 @@
         xmlns:vm="clr-namespace:Skillbox_HomeWork_19_MVVM.ViewModels"
         mc:Ignorable="d"
         Title="Банковская система ТЕРЕМОК" Height="450" Width="800" WindowStartupLocation="CenterScreen">
-    <!--<Window.DataContext>
-        <vm:MainWindowViewModel/>
-    </Window.DataContext>-->
     
     <Window.Resources>
         <DataTemplate x:Key="titleText">
@@ -20,6 +17,7 @@
                        FontStyle="Italic" 
                        TextWrapping="Wrap"/>
         </DataTemplate>
+
     </Window.Resources>
 
     <Grid>
@@ -117,7 +115,8 @@
                           SelectionMode="Single"
                           AutoGenerateColumns="False"
                           ItemsSource="{Binding ViewPersons}"
-                          IsReadOnly="True">
+                          IsReadOnly="True"
+                          >
                     <DataGrid.Columns>
                         <DataGridTextColumn x:Name="id_Person"
                                             Header="ID"
@@ -193,6 +192,7 @@
             <Button x:Name="Exit" Grid.Row="2"
                     Height="35" Width="160"
                     Content="Выход"
+                    Command="{Binding ExitCommand}"
                     />
 
         </Grid>

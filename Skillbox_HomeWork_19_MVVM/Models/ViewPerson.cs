@@ -9,7 +9,7 @@ using System.Collections;
 
 namespace Skillbox_HomeWork_19_MVVM.Models
 {
-    public class ViewPerson: INotifyPropertyChanged
+    public class ViewPerson : INotifyPropertyChanged
     {
         public ViewPerson(int Id_Client, string LastName, string FirstName, int Age, decimal Deposit, decimal InterestRate)
         {
@@ -20,6 +20,7 @@ namespace Skillbox_HomeWork_19_MVVM.Models
             deposit = Deposit;
             interestRate = InterestRate;
         }
+
 
         private int id_Client;
         private string lastName;
@@ -89,8 +90,7 @@ namespace Skillbox_HomeWork_19_MVVM.Models
 
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
     }

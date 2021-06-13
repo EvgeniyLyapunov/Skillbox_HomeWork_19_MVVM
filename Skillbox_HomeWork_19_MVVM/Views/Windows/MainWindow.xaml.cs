@@ -24,7 +24,7 @@ namespace Skillbox_HomeWork_19_MVVM
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
+            DataContext = new MainWindowViewModel(this);
         }
     }
 }

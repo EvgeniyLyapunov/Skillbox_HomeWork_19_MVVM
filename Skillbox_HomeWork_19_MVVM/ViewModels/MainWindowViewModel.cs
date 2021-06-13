@@ -5,60 +5,44 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using Skillbox_HomeWork_19_MVVM.Data;
-using System.Data.Entity;
+using System.Collections.ObjectModel;
 
 namespace Skillbox_HomeWork_19_MVVM.ViewModels
 {
-    public class MainWindowViewModel: INotifyPropertyChanged
+    public class MainWindowViewModel
     {
         DataBaseContext context;
         Random rnd;
-        private List<ViewOrg> viewOrgs;
-        private List<ViewPerson> viewPersons;
+        private static ObservableCollection<ViewOrg> viewOrgs;
+        private static ObservableCollection<ViewPerson> viewPersons;
+        private static MainWindow mainWindow;
 
-        public static AddClientWindow addClientWindow;
 
-
-        public MainWindowViewModel()
+        public MainWindowViewModel(Window window)
         {
             context = new DataBaseContext();
             rnd = new Random();
-            viewOrgs = new List<ViewOrg>();
-            viewPersons = new List<ViewPerson>();
-
+            mainWindow = (window as MainWindow);
+            ViewOrgListRefresh();
             ViewPersonListRefresh();
         }
-        
-        public List<ViewOrg> ViewOrgs
+
+        static MainWindowViewModel()
         {
-            get => viewOrgs;
-            set
-            {
-                viewOrgs = value;
-                OnPropertyChanged("ViewOrgs");
-            }
+            viewOrgs = new ObservableCollection<ViewOrg>();
+            viewPersons = new ObservableCollection<ViewPerson>();
         }
 
-        public List<ViewPerson> ViewPersons
-        {
-            get => viewPersons;
-            set
-            {
-                viewPersons = value;
-                OnPropertyChanged("ViewPersons");
-            }
-        }
+        public static ObservableCollection<ViewOrg> ViewOrgs { get => viewOrgs; set => viewOrgs = value; }
+        public static ObservableCollection<ViewPerson> ViewPersons { get => viewPersons; set => viewPersons = value; }
 
         #region// Команды для кнопок и меню
 
-        /// <summary>
-        /// Команда открывает окно по зозданию нового клиента
-        /// </summary>
+        
         private RelayCommand addNewClientWindowCommand;
+        /// <summary>Команда открывает окно по созданию нового клиента</summary>
         public RelayCommand AddNewClientWindowCommand
         {
             get
@@ -66,68 +50,51 @@ namespace Skillbox_HomeWork_19_MVVM.ViewModels
                 return addNewClientWindowCommand ??
                    (addNewClientWindowCommand = new RelayCommand(obj =>
                    {
-                       addClientWindow = new AddClientWindow();
+                       AddClientWindow addClientWindow = new AddClientWindow();
                        addClientWindow.ShowDialog();
                    }));
             }
         }
 
-        /// <summary>
-        /// Команда закрывает окно создания Нового клиента
-        /// </summary>
-        private RelayCommand cancelAddNewClientCommand;
-        public RelayCommand CancelAddNewClientCommand
+
+        private RelayCommand exitCommand;
+        /// <summary>Команда закрывает приложение</summary>
+        public RelayCommand ExitCommand
         {
             get
             {
-                return cancelAddNewClientCommand ??
-                    (cancelAddNewClientCommand = new RelayCommand(obj =>
+                return exitCommand ??
+                    (exitCommand = new RelayCommand(obj =>
                     {
-                        addClientWindow.DialogResult = false;
-                    }));
-            }
-        }
-
-        /// <summary>
-        /// Команда создаёт нового клиента типа NaturalPerson
-        /// </summary>
-
-        private RelayCommand addNaturalPersonNewClientCommand;
-        public RelayCommand AddNaturalPersonNewClientCommand
-        {
-            get
-            {
-                return addNaturalPersonNewClientCommand ??
-                    (addNaturalPersonNewClientCommand = new RelayCommand(obj =>
-                    {
-                        var client = ClientCreation.GetClient(rnd);
-                        context.Client.Add(client);
-                        context.SaveChanges();
-
-                        int forIdClient = context.Client.ToList()[context.Client.ToList().Count - 1].Id;
-
-                        var naturalPerson = ClientCreation.GetPerson(rnd, forIdClient);
-                        context.NaturalPerson.Add(naturalPerson);
-                        context.SaveChanges();
-
-                        ViewPersonListRefresh();
-
-                        addClientWindow.DialogResult = !false;
+                        Application.Current.Shutdown();
                     }));
             }
         }
         #endregion
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        /// <summary>Метод формирует список объединённых данных, инициализирует экземпляры ViewOrg и добавляет их в коллекцию ViewOrgs</summary>
+        public void ViewOrgListRefresh()
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            var orgView = context.Organization.Join(context.Client,
+               org => org.id_Client,
+               _client => _client.Id,
+               (org, _client) => new
+               {
+                   org.id_Client,
+                   org.name,
+                   org.employeeCount,
+                   _client.deposit,
+                   _client.interestRate
+               }).ToList();
+
+            foreach (var e in orgView)
+            {
+                ViewOrg org = new ViewOrg(e.id_Client, e.name, e.employeeCount, e.deposit, e.interestRate);
+                ViewOrgs.Add(org);
+            }
         }
 
-        /// <summary>
-        /// Метод формирует список объединённых данных, инициализирует экземпляры ViewPerson и добавляет их в коллекцию ViewPersons
-        /// </summary>
+        /// <summary>Метод формирует список объединённых данных, инициализирует экземпляры ViewPerson и добавляет их в коллекцию ViewPersons</summary>
         public void ViewPersonListRefresh()
         {
             var personView = context.NaturalPerson.Join(context.Client,
@@ -149,5 +116,30 @@ namespace Skillbox_HomeWork_19_MVVM.ViewModels
                 ViewPersons.Add(person);
             }
         }
+
+        /// <summary>Метод прокручивает в поле видимости последний элемент DataGridPerson</summary>
+        public static void DataGridPersonScrollToEnd()
+        {
+            if (mainWindow.XDataGridPerson.Items.Count == 0)
+                return;
+
+            int index = mainWindow.XDataGridPerson.Items.Count - 1;
+            object item = mainWindow.XDataGridPerson.Items[index];
+
+            mainWindow.XDataGridPerson.ScrollIntoView(item);
+        }
+
+        /// <summary>Метод прокручивает в поле видимости последний элемент DataGridOrg</summary>
+        public static void DataGridOrgScrollToEnd()
+        {
+            if (mainWindow.XDataGridOrg.Items.Count == 0)
+                return;
+
+            int index = mainWindow.XDataGridOrg.Items.Count - 1;
+            object item = mainWindow.XDataGridOrg.Items[index];
+
+            mainWindow.XDataGridOrg.ScrollIntoView(item);
+        }
+
     }
 }

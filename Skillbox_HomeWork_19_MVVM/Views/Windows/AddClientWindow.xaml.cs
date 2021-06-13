@@ -23,7 +23,7 @@ namespace Skillbox_HomeWork_19_MVVM.Views.Windows
         public AddClientWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
+            DataContext = new AddClientWindowViewModel(this);
         }
     }
 }

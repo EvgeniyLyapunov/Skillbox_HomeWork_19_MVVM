@@ -11,7 +11,6 @@ namespace Skillbox_HomeWork_19_MVVM.ViewModels
     public delegate void ActiveLog(string arg);
     public class MainWindowViewModel
     {
-        DataBaseContext context;
         private static ObservableCollection<ViewOrg> viewOrgs;
         private static ObservableCollection<ViewPerson> viewPersons;
         private static ObservableCollection<string> log;
@@ -20,7 +19,6 @@ namespace Skillbox_HomeWork_19_MVVM.ViewModels
 
         public MainWindowViewModel(Window window)
         {
-            context = new DataBaseContext();
             mainWindow = window as MainWindow;
             ViewOrgListRefresh();
             ViewPersonListRefresh();
@@ -39,9 +37,8 @@ namespace Skillbox_HomeWork_19_MVVM.ViewModels
 
         #region// Команды для кнопок и меню
 
-        
-        private RelayCommand addNewClientWindowCommand;
         /// <summary>Команда открывает окно по созданию нового клиента</summary>
+        private RelayCommand addNewClientWindowCommand;
         public RelayCommand AddNewClientWindowCommand
         {
             get
@@ -55,9 +52,23 @@ namespace Skillbox_HomeWork_19_MVVM.ViewModels
             }
         }
 
+        /// <summary>Команда открывает окно по "начислению" процентов</summary>
+        private RelayCommand accrualOfInterestCommand;
+        public RelayCommand AccrualOfInterestCommand
+        {
+            get
+            {
+                return accrualOfInterestCommand ??
+                    (accrualOfInterestCommand = new RelayCommand(obj =>
+                    {
+                        InterestWindow interestWindow = new InterestWindow();
+                        interestWindow.ShowDialog();
+                    }));
+            }
+        }
 
-        private RelayCommand exitCommand;
         /// <summary>Команда закрывает приложение</summary>
+        private RelayCommand exitCommand;
         public RelayCommand ExitCommand
         {
             get
@@ -69,11 +80,13 @@ namespace Skillbox_HomeWork_19_MVVM.ViewModels
                     }));
             }
         }
+
         #endregion
 
         /// <summary>Метод формирует список объединённых данных, инициализирует экземпляры ViewOrg и добавляет их в коллекцию ViewOrgs</summary>
-        public void ViewOrgListRefresh()
+        public static void ViewOrgListRefresh()
         {
+            DataBaseContext context = new DataBaseContext();
             var orgView = context.Organization.Join(context.Client,
                org => org.id_Client,
                _client => _client.Id,
@@ -94,8 +107,9 @@ namespace Skillbox_HomeWork_19_MVVM.ViewModels
         }
 
         /// <summary>Метод формирует список объединённых данных, инициализирует экземпляры ViewPerson и добавляет их в коллекцию ViewPersons</summary>
-        public void ViewPersonListRefresh()
+        public static void ViewPersonListRefresh()
         {
+            DataBaseContext context = new DataBaseContext();
             var personView = context.NaturalPerson.Join(context.Client,
                person => person.id_Client,
                _client => _client.Id,

@@ -69,6 +69,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Windows\InterestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -86,10 +90,14 @@
     <Compile Include="Models\ViewOrg.cs" />
     <Compile Include="Models\ViewPerson.cs" />
     <Compile Include="ViewModels\AddClientWindowViewModel.cs" />
+    <Compile Include="ViewModels\InterestWindowViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="Views\Windows\AddClientWindow.xaml.cs">
       <DependentUpon>AddClientWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\InterestWindow.xaml.cs">
+      <DependentUpon>InterestWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

@@ -187,6 +187,7 @@
             <Button x:Name="AccrualOfInterest" Grid.Row="1"
                     Height="35" Width="160"
                     Content="Начисление процентов"
+                    Command="{Binding AccrualOfInterestCommand}"
                     />
 
             <Button x:Name="Exit" Grid.Row="2"

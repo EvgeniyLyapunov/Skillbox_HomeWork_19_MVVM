@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Skillbox_HomeWork_19_MVVM.ViewModels;
 using System.Windows;
 
 namespace Skillbox_HomeWork_19_MVVM
 {
-    /// <summary>
-    /// Логика взаимодействия для App.xaml
-    /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            MainWindow window = new MainWindow();
+            MainWindowViewModel viewModel = new MainWindowViewModel(window);
+            window.DataContext = viewModel;
+            window.Show();
+        }
     }
 }

@@ -1,30 +1,27 @@
 ﻿using Skillbox_HomeWork_19_MVVM.Models;
 using Skillbox_HomeWork_19_MVVM.Views.Windows;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using Skillbox_HomeWork_19_MVVM.Data;
 using System.Collections.ObjectModel;
 
 namespace Skillbox_HomeWork_19_MVVM.ViewModels
 {
+    public delegate void ActiveLog(string arg);
     public class MainWindowViewModel
     {
         DataBaseContext context;
-        Random rnd;
         private static ObservableCollection<ViewOrg> viewOrgs;
         private static ObservableCollection<ViewPerson> viewPersons;
+        private static ObservableCollection<string> log;
         private static MainWindow mainWindow;
 
 
         public MainWindowViewModel(Window window)
         {
             context = new DataBaseContext();
-            rnd = new Random();
-            mainWindow = (window as MainWindow);
+            mainWindow = window as MainWindow;
             ViewOrgListRefresh();
             ViewPersonListRefresh();
         }
@@ -33,10 +30,12 @@ namespace Skillbox_HomeWork_19_MVVM.ViewModels
         {
             viewOrgs = new ObservableCollection<ViewOrg>();
             viewPersons = new ObservableCollection<ViewPerson>();
+            log = new ObservableCollection<string>();
         }
 
         public static ObservableCollection<ViewOrg> ViewOrgs { get => viewOrgs; set => viewOrgs = value; }
         public static ObservableCollection<ViewPerson> ViewPersons { get => viewPersons; set => viewPersons = value; }
+        public static ObservableCollection<string> Log { get => log; set => log = value; }
 
         #region// Команды для кнопок и меню
 
@@ -140,6 +139,16 @@ namespace Skillbox_HomeWork_19_MVVM.ViewModels
 
             mainWindow.XDataGridOrg.ScrollIntoView(item);
         }
+
+        /// <summary>
+        /// Метод, используемый для подписки на событие BankLog, добавляет сообщение о операции с депозитом клиента в коллекцию log
+        /// </summary>
+        /// <param name="arg">Сообщение о банковской операции</param>
+        public static void AddLog(string arg)
+        {
+            Log.Add(arg);
+        }
+
 
     }
 }

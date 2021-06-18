@@ -1,0 +1,84 @@
+﻿<Window x:Class="Skillbox_HomeWork_19_MVVM.Views.Windows.ChangeDepositWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Skillbox_HomeWork_19_MVVM.Views.Windows"
+        mc:Ignorable="d"
+        Title="{Binding WindowTitle}" Height="200" Width="450" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Border BorderThickness="3" BorderBrush="DarkBlue" CornerRadius="2">
+        <Grid >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2.5*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Header="Клиент"
+                  Margin="3"
+                  Grid.Row="0" Grid.Column="0">
+                <TextBlock x:Name="XXTextBlockNameOfClient"
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center"
+                           Padding="0 5 0 0"
+                           FontSize="12"
+                           FontWeight="Bold"
+                           Text="{Binding Name}"/>
+            </GroupBox>
+
+            <GroupBox Header="Депозит"
+                  Margin="20 3 20 3"
+                  Grid.Row="0" Grid.Column="1">
+                <TextBlock x:Name="XXTextBlockDepositOfClient"
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center"
+                           Padding="0 5 0 0"
+                           FontSize="12"
+                           FontWeight="Bold"
+                           Text="{Binding Deposit}"/>
+            </GroupBox>
+
+            <StackPanel Orientation="Horizontal"
+                        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center">
+                <TextBlock x:Name="XXTBlockTitleOperation"
+                           Margin="10"
+                           Height="25" Width="210"
+                           Text="Введите сумму операции:"
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center"/>
+                <TextBox x:Name="XXTextBoxEnterSum"
+                         Margin="5 5 15 5"
+                         Height="25" Width="190"
+                         VerticalContentAlignment="Center"
+                         Padding="10 0 0 0"
+                         FontSize="17"
+                         FontWeight="Bold"
+                         Text="{Binding EnteredAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+            </StackPanel>
+
+            <Button x:Name="XXButtonChangeDepositOk"
+                    Grid.Row="3" Grid.Column="1"
+                    Margin="40 10 40 10"
+                    Content="Выполнить"
+                    Command="{Binding ChangeDepositCommand}"
+                />
+
+            <Button x:Name="XXButtonChangeDepositCancel"
+                    Grid.Row="3" Grid.Column="0"
+                    Margin="40 10 40 10"
+                    Content="Отмена"
+                    Command="{Binding CanselCommand}"
+                />
+        </Grid>
+
+    </Border>
+</Window>

@@ -1,0 +1,179 @@
+﻿<Window x:Class="Skillbox_HomeWork_19_MVVM.Views.Windows.TransferWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Skillbox_HomeWork_19_MVVM.Views.Windows"
+        mc:Ignorable="d"
+        Title="Перевод между клиентами банка" Height="300" Width="500" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+
+    <Window.Resources>
+        <DataTemplate x:Key="titleText">
+            <TextBlock Text="{Binding}" 
+                       Foreground="Blue" 
+                       FontSize="10" 
+                       FontWeight="Normal"
+                       FontStyle="Italic" 
+                       TextWrapping="Wrap"/>
+        </DataTemplate>
+
+    </Window.Resources>
+
+
+    <Border BorderThickness="3" BorderBrush="DarkGoldenrod" CornerRadius="2">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal"
+                        Grid.Row="0" Grid.Column="0"
+                        >
+                <StackPanel.ToolTip>
+                    <ToolTip ToolTipService.ShowDuration="100">
+                        <TextBlock>
+                            Внимание!
+                             <LineBreak/>
+                            При выборе типа Клиента - получателя программа автоматически выберет текущего клиента или первого в списке.
+                             <LineBreak/>
+                            Помните, что Отправитель и Получатель не могут быть одним и тем же лицом,
+                             <LineBreak/>
+                            а сумма перевода больше, чем сумма депозита Клиента - отправителя.
+                        </TextBlock>
+                    </ToolTip>
+                </StackPanel.ToolTip>
+                <RadioButton GroupName="XXXRadio"
+                             Name="XXXRadioButtonOrg"
+                             Content="Юридические лица"
+                             Margin="10"
+                             Command="{Binding OrgRadioButtonCommand}"
+                             />
+                <RadioButton GroupName="XXXRadio"
+                             Name="XXXRadioButtonPerson"
+                             Content="Физические лица" 
+                             Margin="10"
+                             Command="{Binding PersonRadioButtonCommand}"
+                             />
+            </StackPanel>
+
+            <DataGrid x:Name="XXXgridView"
+                      Grid.Row="1" Grid.Column="0"
+                      Grid.RowSpan="5"
+                      IsSynchronizedWithCurrentItem="True"
+                      SelectionMode="Single"
+                      AutoGenerateColumns="False"
+                      ItemsSource="{Binding}"
+                      SelectedItem="{Binding SelectedRecipient}"
+                      IsReadOnly="True"
+                      >
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="name"
+                                        Header="Наименование организации"
+                                        HeaderTemplate="{StaticResource titleText}"
+                                        Binding="{Binding Name}"
+                                        />
+
+                    <DataGridTextColumn x:Name="lastName"
+                                        Header="Фамилия"
+                                        HeaderTemplate="{StaticResource titleText}"
+                                        Binding="{Binding LastName}"
+                                        />
+                    <DataGridTextColumn x:Name="firstName"
+                                        Header="Имя"
+                                        HeaderTemplate="{StaticResource titleText}"
+                                        Binding="{Binding FirstName}"/>
+                    <DataGridTextColumn x:Name="deposit"
+                                        Header="Сумма депозита"
+                                        HeaderTemplate="{StaticResource titleText}"
+                                        Binding="{Binding Deposit}"/>
+                </DataGrid.Columns>
+
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Выбрать в качестве клиента - получателя"
+                                  Name="SelectAsClientRecipient"
+                                  Command="{Binding GetRecipientCommand}"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>
+
+            
+            <TextBlock Grid.Row="0" Grid.Column="1"
+                       Text="Клиент - отправитель"
+                       Margin="10"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"/>
+            <TextBox x:Name="XXXSender"
+                     Grid.Row="1" Grid.Column="1"
+                     Margin="10 5 10 5"
+                     VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Center"
+                     FontSize="15"
+                     FontWeight="Bold"
+                     IsReadOnly="True"
+                     Text="{Binding Name}"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="1"
+                       Text="Клиент - получатель"
+                       Margin="10"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"/>
+            <TextBox x:Name="XXXRecipient"
+                     Grid.Row="3" Grid.Column="1"
+                     Margin="10 5 10 5"
+                     VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Center"
+                     FontSize="15"
+                     FontWeight="Bold"
+                     IsReadOnly="True"
+                     />
+
+            <TextBlock Grid.Row="4" Grid.Column="1"
+                       Text="Введите сумму операци:"
+                       Margin="10"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"/>
+            <TextBox x:Name="XXXOperationSum"
+                     Grid.Row="5" Grid.Column="1"
+                     Margin="10 5 10 5"
+                     BorderBrush="Green"
+                     BorderThickness="2"
+                     VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Center"
+                     FontSize="15"
+                     FontWeight="Bold"
+                     Text="{Binding EnteredAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     />
+
+
+            <StackPanel Grid.Row="6" Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Orientation="Horizontal">
+                <Button x:Name="XXXButtonCancel"
+                        Margin="25 5 20 5"
+                        Width="200"
+                        Content="Отмена"
+                        Command="{Binding CanselCommand}"/>
+                <Button x:Name="XXXButtonOk"
+                        Margin="20 5 20 5"
+                        Width="200"
+                        Content="Выполнить"
+                        Command="{Binding TransferCommand}"/>
+
+            </StackPanel>
+
+
+        </Grid>
+    </Border>
+</Window>

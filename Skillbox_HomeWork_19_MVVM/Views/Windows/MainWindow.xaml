@@ -56,6 +56,7 @@
                           SelectionMode="Single"
                           AutoGenerateColumns="False"
                           ItemsSource="{Binding ViewOrgs}"
+                          SelectedItem="{Binding SelectedClient}"
                           IsReadOnly="True"
                           >
 
@@ -92,16 +93,18 @@
                     <DataGrid.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Пополнить депозит"
-                                      Name="XDepositIncreaseOrg" 
+                                      Name="XDepositIncreaseOrg"
+                                      Command="{Binding IncreaseDepositCommand}"
                                       />
                             <MenuItem Header="Снять с депозита"
                                       Name="XDepositDecreaseOrg"
+                                      Command="{Binding DecreaseDepositCommand}"
                                       />
                             <MenuItem Header="Перевод средств"
-                                      Name="XDepositTransferOrg"
-                                      />
+                                      Command="{Binding TransferCommand}"/>
                             <MenuItem Header="Удалить клиента"
                                       Name="XDeleteClientOrg"
+                                      Command="{Binding DeleteCommand}"
                                       />
                         </ContextMenu>
                     </DataGrid.ContextMenu>
@@ -115,6 +118,7 @@
                           SelectionMode="Single"
                           AutoGenerateColumns="False"
                           ItemsSource="{Binding ViewPersons}"
+                          SelectedItem="{Binding SelectedClient}"
                           IsReadOnly="True"
                           >
                     <DataGrid.Columns>
@@ -154,15 +158,19 @@
                         <ContextMenu>
                             <MenuItem Header="Пополнить депозит"
                                       Name="XDepositIncreasePerson"
+                                      Command="{Binding IncreaseDepositCommand}"
                                       />
                             <MenuItem Header="Снять с депозита"
                                       Name="XDepositDecreasePerson"
+                                      Command="{Binding DecreaseDepositCommand}"
                                       />
                             <MenuItem Header="Перевод средств"
                                       Name="XDepositTransferPerson"
+                                      Command="{Binding TransferCommand}"
                                       />
                             <MenuItem Header="Удалить клиента"
                                       Name="XDeleteClientPerson"
+                                      Command="{Binding DeleteCommand}"
                                       />
                         </ContextMenu>
                     </DataGrid.ContextMenu>

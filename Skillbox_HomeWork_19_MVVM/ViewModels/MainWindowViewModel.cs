@@ -16,6 +16,9 @@ namespace Skillbox_HomeWork_19_MVVM.ViewModels
         private static ObservableCollection<string> log;
         private static MainWindow mainWindow;
 
+        private static object selectedClient;
+        private static string typeOperation;
+
 
         public MainWindowViewModel(Window window)
         {
@@ -34,6 +37,8 @@ namespace Skillbox_HomeWork_19_MVVM.ViewModels
         public static ObservableCollection<ViewOrg> ViewOrgs { get => viewOrgs; set => viewOrgs = value; }
         public static ObservableCollection<ViewPerson> ViewPersons { get => viewPersons; set => viewPersons = value; }
         public static ObservableCollection<string> Log { get => log; set => log = value; }
+        public static object SelectedClient { get => selectedClient; set => selectedClient = value; }
+        public static string TypeOperation { get => typeOperation; set => typeOperation = value; }
 
         #region// Команды для кнопок и меню
 
@@ -77,6 +82,70 @@ namespace Skillbox_HomeWork_19_MVVM.ViewModels
                     (exitCommand = new RelayCommand(obj =>
                     {
                         Application.Current.Shutdown();
+                    }));
+            }
+        }
+
+        private RelayCommand increaseDepositCommand;
+        public RelayCommand IncreaseDepositCommand
+        {
+            get
+            {
+                return increaseDepositCommand ??
+                    (increaseDepositCommand = new RelayCommand(obj =>
+                    {
+                        TypeOperation = "Increase";
+                        ChangeDepositWindow changeDepositWindow = new ChangeDepositWindow();
+                        changeDepositWindow.ShowDialog();
+                    }));
+            }
+        }
+
+        private RelayCommand decreaseDepositCommand;
+        public RelayCommand DecreaseDepositCommand
+        {
+            get
+            {
+                return decreaseDepositCommand ??
+                    (decreaseDepositCommand = new RelayCommand(obj =>
+                    {
+                        TypeOperation = "Decrease";
+                        ChangeDepositWindow changeDepositWindow = new ChangeDepositWindow();
+                        changeDepositWindow.ShowDialog();
+
+                    }));
+            }
+        }
+
+        private RelayCommand transferCommand;
+        public RelayCommand TransferCommand
+        {
+            get
+            {
+                return transferCommand ??
+                    (transferCommand = new RelayCommand(obj =>
+                    {
+                        if(SelectedClient == null)
+                        {
+                            MessageBox.Show("Необходимо выбрать клиента отправителя перевода.", "Ошибка ввода!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+                        TransferWindow transferWindow = new TransferWindow();
+                        transferWindow.ShowDialog();
+                    }));
+            }
+        }
+
+        private RelayCommand deleteCommand;
+        public RelayCommand DeleteCommand
+        {
+            get
+            {
+               return deleteCommand ??
+                    (deleteCommand = new RelayCommand(obj =>
+                    {
+                        DeleteWindow deleteWindow = new DeleteWindow();
+                        deleteWindow.ShowDialog();
                     }));
             }
         }
@@ -155,12 +224,21 @@ namespace Skillbox_HomeWork_19_MVVM.ViewModels
         }
 
         /// <summary>
-        /// Метод, используемый для подписки на событие BankLog, добавляет сообщение о операции с депозитом клиента в коллекцию log
+        /// Метод, используемый для подписки на событие BankLog, добавляет сообщение о операции с депозитом клиента в коллекцию log,
+        /// прокручивает в поле видимости последний элемент ListBoxLog
         /// </summary>
         /// <param name="arg">Сообщение о банковской операции</param>
         public static void AddLog(string arg)
         {
             Log.Add(arg);
+
+            if (mainWindow.XListBoxLog.Items.Count == 0)
+                return;
+
+            int index = mainWindow.XListBoxLog.Items.Count - 1;
+            object item = mainWindow.XListBoxLog.Items[index];
+
+            mainWindow.XListBoxLog.ScrollIntoView(item);
         }
 
 
